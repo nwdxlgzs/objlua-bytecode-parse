@@ -20,7 +20,7 @@ local opmodes = {
     "iABC","iABC","iABC","iABC","iABC","iABC","iABC","iABC","iABC","iABC",
     "iABC","iABC","iABC","iABx","iABx","iABx","iABC","iABx","iABC","iABx",
     "iABC","iABC","iAx","iABC","iABC","iABC","iABC","iABC","iABC","iABC",
-    "iABC",
+    "iABC","iABC",
 };
 local opnames = {
     "MOVE","LOADI","LOADF","LOADK","LOADKX",
@@ -40,8 +40,8 @@ local opnames = {
     "RETURN","RETURN0","RETURN1","FORLOOP","FORPREP",
     "TFORPREP","TFORCALL","TFORLOOP","SETLIST","CLOSURE",
     "VARARG","VARARGPREP","EXTRAARG","DEFCLASS","DEFFIELD",
-    "METHODINIT","DEFMETHODARGTYPE","DEFMETHOD","CKMCONST","TYPEOF",
-    "INSTANCEOF",
+    "METHODINIT","DEFMETHODARGTYPE","DEFMETHOD","CKMCONST","CKCABSTRACT",
+    "TYPEOF","INSTANCEOF",
 }
 local iABC, iABx, iAsBx, iAx, isJ;
 local class Instruction{
