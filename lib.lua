@@ -78,28 +78,28 @@ local class Instruction{
     }
     public static const SIZE_C = 8;
     public static const SIZE_B = 8;
-    public static const SIZE_Bx = (8 + 8 + 1);
+    public static const SIZE_Bx = (Instruction.SIZE_C + Instruction.SIZE_B + 1);
     public static const SIZE_A = 8;
-    public static const SIZE_Ax = ((8 + 8 + 1) + 8);
-    public static const SIZE_sJ = ((8 + 8 + 1) + 8);
+    public static const SIZE_Ax = (Instruction.SIZE_Bx + 8);
+    public static const SIZE_sJ = (Instruction.SIZE_Bx + 8);
     public static const SIZE_OP = 7;
     public static const POS_OP = 0;
-    public static const POS_A = (0 + 7);
-    public static const POS_k = ((0 + 7) + 8);
-    public static const POS_B = (((0 + 7) + 8) + 1);
-    public static const POS_C = ((((0 + 7) + 8) + 1) + 8);
-    public static const POS_Bx = ((0 + 7) + 8);
-    public static const POS_Ax = (0 + 7);
-    public static const POS_sJ = (0 + 7);
-    public static const MAXARG_Bx = ((1<<(8 + 8 + 1))-1);
-    public static const OFFSET_sBx = (((1<<(8 + 8 + 1))-1)>>1);
-    public static const MAXARG_Ax = ((1<<((8 + 8 + 1) + 8))-1);
-    public static const MAXARG_sJ = ((1 << ((8 + 8 + 1) + 8)) - 1);
-    public static const OFFSET_sJ = (((1 << ((8 + 8 + 1) + 8)) - 1) >> 1);
-    public static const MAXARG_A = ((1<<8)-1);
-    public static const MAXARG_B = ((1<<8)-1);
-    public static const MAXARG_C = ((1<<8)-1);
-    public static const OFFSET_sC = (((1<<8)-1) >> 1);
+    public static const POS_A = (Instruction.POS_OP + 7);
+    public static const POS_k = (Instruction.POS_A + 8);
+    public static const POS_B = (Instruction.POS_k + 1);
+    public static const POS_C = (Instruction.POS_B + 8);
+    public static const POS_Bx = (Instruction.POS_A + 8);
+    public static const POS_Ax = (Instruction.POS_A);
+    public static const POS_sJ = (Instruction.POS_A);
+    public static const MAXARG_Bx = ((1 << Instruction.SIZE_Bx) - 1);
+    public static const OFFSET_sBx = (Instruction.MAXARG_Bx>>1);
+    public static const MAXARG_Ax = ((1 << Instruction.SIZE_Ax) - 1);
+    public static const MAXARG_sJ = ((1 << Instruction.SIZE_sJ) - 1);
+    public static const OFFSET_sJ = (Instruction.MAXARG_sJ >> 1);
+    public static const MAXARG_A = ((1<<Instruction.SIZE_A)-1);
+    public static const MAXARG_B = ((1<<Instruction.SIZE_B)-1);
+    public static const MAXARG_C = ((1<<Instruction.SIZE_C)-1);
+    public static const OFFSET_sC = (Instruction.MAXARG_C >> 1);
     public static const int2sC(i:number){
         return i + Instruction.OFFSET_sC;
     }
