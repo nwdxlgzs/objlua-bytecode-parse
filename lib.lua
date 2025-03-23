@@ -100,122 +100,82 @@ local class Instruction{
     public static const MAXARG_B = ((1<<Instruction.SIZE_B)-1);
     public static const MAXARG_C = ((1<<Instruction.SIZE_C)-1);
     public static const OFFSET_sC = (Instruction.MAXARG_C >> 1);
-    public static const int2sC(i:number){
-        return i + Instruction.OFFSET_sC;
-    }
-    public static const sC2int(i:number){
-        return i - Instruction.OFFSET_sC;
-    }
-    public static const MASK1(n:number, p:number){
-        return ((~((~0)<<n))<<p)
-    }
-    public static const MASK0(n:number, p:number){
-        return ~Instruction.MASK1(n, p)
-    }
-    getOpCode(){
-        return (self.instruction >> self.POS_OP) & Instruction.MASK1(Instruction.SIZE_OP, 0);
-    }
+    public static const int2sC(i:number) -> i + Instruction.OFFSET_sC;
+    public static const sC2int(i:number) -> i - Instruction.OFFSET_sC;
+    public static const MASK1(n:number, p:number) -> ((~((~0)<<n))<<p);
+    public static const MASK0(n:number, p:number) -> ~Instruction.MASK1(n, p);
+    getOpCode() -> (self.instruction >> self.POS_OP) & Instruction.MASK1(Instruction.SIZE_OP, 0);
     setOpCode(o:number){
         self.instruction = (self.instruction & Instruction.MASK0(Instruction.SIZE_OP, Instruction.POS_OP)) |
         ((o << Instruction.POS_OP) & Instruction.MASK1(Instruction.SIZE_OP, Instruction.POS_OP));
     }
-    getarg(pos:number, size:number){
-        return (self.instruction >> pos) & Instruction.MASK1(size, 0);
-    }
+    getarg(pos:number, size:number) -> (self.instruction >> pos) & Instruction.MASK1(size, 0);
     setarg(v:number, pos:number, size:number){
         self.instruction = (self.instruction & Instruction.MASK0(size, pos)) | ((v << pos) & Instruction.MASK1(size, pos));
     }
 }
 class iABC:Instruction{
-    @meta static __tostring(){
-        return string.format("<iABC|%s\tA=%d\tB=%d\tC=%d\tK=%d>", self.getOpName(), self.getA(), self.getB(), self.getC(), self.getK());
-    }
-    public getA(){
-        return self.getarg(Instruction.POS_A, Instruction.SIZE_A);
-    }
+    @meta static __tostring() ->
+        string.format("<iABC|%s\tA=%d\tB=%d\tC=%d\tK=%d>", self.getOpName(), self.getA(), self.getB(), self.getC(), self.getK());
+    public getA() -> self.getarg(Instruction.POS_A, Instruction.SIZE_A);
     public setA(v:number){
         self.setarg(v, Instruction.POS_A, Instruction.SIZE_A);
     }
-    public getB(){
-        return self.getarg(Instruction.POS_B, Instruction.SIZE_B);
-    }
-    public getsB(){
-        return Instruction.sC2int(self.getB());
-    }
+    public getB() -> self.getarg(Instruction.POS_B, Instruction.SIZE_B);
+    public getsB() -> Instruction.sC2int(self.getB());
     public setB(v:number){
         self.setarg(v, Instruction.POS_B, Instruction.SIZE_B);
     }
-    public getC(){
-        return self.getarg(Instruction.POS_C, Instruction.SIZE_C);
-    }
-    public getsC(){
-        return Instruction.sC2int(self.getC());
-    }
+    public getC() -> self.getarg(Instruction.POS_C, Instruction.SIZE_C);
+    public getsC() -> Instruction.sC2int(self.getC());
     public setC(v:number){
         self.setarg(v, Instruction.POS_C, Instruction.SIZE_C);
     }
-    public getK(){
-        return self.getarg(Instruction.POS_k, 1);
-    }
+    public getK() -> self.getarg(Instruction.POS_k, 1);
     public setK(v:number){
         self.setarg(v, Instruction.POS_k, 1);
     }
 }
 class iABx:Instruction{
-    @meta static __tostring(){
-        return string.format("<iABx|%s\tA=%d\tBx=%d>", self.getOpName(), self.getA(), self.getBx());
-    }
-    public getA(){
-        return self.getarg(Instruction.POS_A, Instruction.SIZE_A);
-    }
+    @meta static __tostring() ->
+        string.format("<iABx|%s\tA=%d\tBx=%d>", self.getOpName(), self.getA(), self.getBx());
+    public getA() -> self.getarg(Instruction.POS_A, Instruction.SIZE_A);
     public setA(v:number){
         self.setarg(v, Instruction.POS_A, Instruction.SIZE_A);
     }
-    public getBx(){
-        return self.getarg(Instruction.POS_Bx, Instruction.SIZE_Bx);
-    }
+    public getBx() -> self.getarg(Instruction.POS_Bx, Instruction.SIZE_Bx);
     public setBx(v:number){
         self.setarg(v, Instruction.POS_Bx, Instruction.SIZE_Bx);
     }
 }
 class iAsBx:Instruction{
-    @meta static __tostring(){
-        return string.format("<iAsBx|%s\tA=%d\tsBx=%d>", self.getOpName(), self.getA(), self.getsBx());
-    }
-    public getA(){
-        return self.getarg(Instruction.POS_A, Instruction.SIZE_A);
-    }
+    @meta static __tostring() ->
+        string.format("<iAsBx|%s\tA=%d\tsBx=%d>", self.getOpName(), self.getA(), self.getsBx());
+
+    public getA() -> self.getarg(Instruction.POS_A, Instruction.SIZE_A);
     public setA(v:number){
         self.setarg(v, Instruction.POS_A, Instruction.SIZE_A);
     }
     public setBx(v:number){
         self.setarg(v, Instruction.POS_Bx, Instruction.SIZE_Bx);
     }
-    public getsBx(){
-        return self.getarg(Instruction.POS_Bx, Instruction.SIZE_Bx) - Instruction.OFFSET_sBx;
-    }
+    public getsBx() -> self.getarg(Instruction.POS_Bx, Instruction.SIZE_Bx) - Instruction.OFFSET_sBx;
     public setsBx(v:number){
         self.setBx(v + Instruction.OFFSET_sBx);
     }
 }
 class iAx:Instruction{
-    @meta static __tostring(){
-        return string.format("<iAx|%s\tAx=%d>", self.getOpName(), self.getAx());
-    }
-    public getAx(){
-        return self.getarg(Instruction.POS_Ax, Instruction.SIZE_Ax);
-    }
+    @meta static __tostring() ->
+        string.format("<iAx|%s\tAx=%d>", self.getOpName(), self.getAx());
+    public getAx() -> self.getarg(Instruction.POS_Ax, Instruction.SIZE_Ax);
     public setAx(v:number){
         self.setarg(v, Instruction.POS_Ax, Instruction.SIZE_Ax);
     }
 }
 class isJ:Instruction{
-    @meta static __tostring(){
-        return string.format("<isJ|%s\tsJ=%d>", self.getOpName(), self.getsJ());
-    }
-    public getsJ(){
-        return self.getarg(Instruction.POS_sJ, Instruction.SIZE_sJ) - Instruction.OFFSET_sJ;
-    }
+    @meta static __tostring() ->
+        string.format("<isJ|%s\tsJ=%d>", self.getOpName(), self.getsJ());
+    public getsJ() -> self.getarg(Instruction.POS_sJ, Instruction.SIZE_sJ) - Instruction.OFFSET_sJ;
     public setsJ(v:number){
         self.setarg(v + Instruction.OFFSET_sJ, Instruction.POS_sJ, Instruction.SIZE_sJ);
     }
@@ -230,18 +190,11 @@ local class Value{
 local class TValue {
     value_;
     tt_;
-    @meta static __tostring(){
-        return string.format("<TValue\tt_=%d\tvalue=%s>", self.tt_, self.get());
-    }
-    public static const tsvalue(o:<TValue>){
-        return o.value_.string;
-    }
-    public static const ivalue(o:<TValue>){
-        return o.value_.i;
-    }
-    public static const fltvalue(o:<TValue>){
-        return o.value_.n;
-    }
+    @meta static __tostring() ->
+        string.format("<TValue\tt_=%d\tvalue=%s>", self.tt_, self.get());
+    public static const tsvalue(o:<TValue>) -> o.value_.string;
+    public static const ivalue(o:<TValue>) -> o.value_.i;
+    public static const fltvalue(o:<TValue>) -> o.value_.n;
     public get(){
         local tag = ttypetag(self);
         if tag == LUA_VNIL then
@@ -342,9 +295,8 @@ local class AbsLineInfo {
         self.pc = pc;
         self.line = line;
     }
-    @meta static __tostring(){
-        return string.format("<AbsLineInfo\tpc=%d\tline=%d>", self.pc, self.line);
-    }
+    @meta static __tostring() ->
+        string.format("<AbsLineInfo\tpc=%d\tline=%d>", self.pc, self.line);
 };
 local class Proto{
     public Proto() {
@@ -800,9 +752,7 @@ local class ldump{
             table.insert(self.buffer,string.pack(fmt,inst.instruction));
         end
     }
-    private dumpInt(x:number) {
-        self.dumpSize(x);
-    }
+    private dumpInt(x:number) -> self.dumpSize(x);
     private dumpHeader() {
         self.dumpLiteral(lundump.LUA_SIGNATURE);
         self.dumpByte(lundump.LUAC_VERSION);
@@ -814,9 +764,7 @@ local class ldump{
         self.dumpInteger(lundump.LUAC_INT);
         self.dumpNumber(lundump.LUAC_NUM);
     }
-    private dumpLiteral(str:string) {
-        table.insert(self.buffer,str);
-    }
+    private dumpLiteral(str:string) -> table.insert(self.buffer,str);
     private dumpByte(b:boolean) {
         if b then b = 1 else b = 0 end
         self.dumpByte(b);
