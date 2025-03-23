@@ -127,8 +127,6 @@ local class Instruction{
     }
 }
 class iABC:Instruction{
-    public iABC(instruction:number) {}
-    public iABC(instruction:<Instruction>) {}
     @meta static __tostring(){
         return string.format("<iABC|%s\tA=%d\tB=%d\tC=%d\tK=%d>", self.getOpName(), self.getA(), self.getB(), self.getC(), self.getK());
     }
@@ -164,8 +162,6 @@ class iABC:Instruction{
     }
 }
 class iABx:Instruction{
-    public iABx(instruction:number) {}
-    public iABx(instruction:<Instruction>) {}
     @meta static __tostring(){
         return string.format("<iABx|%s\tA=%d\tBx=%d>", self.getOpName(), self.getA(), self.getBx());
     }
@@ -183,8 +179,6 @@ class iABx:Instruction{
     }
 }
 class iAsBx:Instruction{
-    public iAsBx(instruction:number) {}
-    public iAsBx(instruction:<Instruction>) {}
     @meta static __tostring(){
         return string.format("<iAsBx|%s\tA=%d\tsBx=%d>", self.getOpName(), self.getA(), self.getsBx());
     }
@@ -205,8 +199,6 @@ class iAsBx:Instruction{
     }
 }
 class iAx:Instruction{
-    public iAx(instruction:number) {}
-    public iAx(instruction:<Instruction>) {}
     @meta static __tostring(){
         return string.format("<iAx|%s\tAx=%d>", self.getOpName(), self.getAx());
     }
@@ -218,8 +210,6 @@ class iAx:Instruction{
     }
 }
 class isJ:Instruction{
-    public isJ(instruction:number) {}
-    public isJ(instruction:<Instruction>) {}
     @meta static __tostring(){
         return string.format("<isJ|%s\tsJ=%d>", self.getOpName(), self.getsJ());
     }
