@@ -45,7 +45,7 @@ local opnames = {
 }
 local iABC, iABx, iAsBx, iAx, isJ;
 local class Instruction{
-    instruction=0;
+    @nowrap instruction=0;
     public Instruction(instruction:number) {
         self.instruction = instruction;
     }
@@ -73,9 +73,7 @@ local class Instruction{
         if opname==nil then return "UNKNOWN"; end
         return opname;
     }
-    @meta __tostring(){
-        return string.format("<%s\t%d>", self.getOpName(), self.instruction);
-    }
+    @meta __tostring() -> string.format("<%s\t%d>", self.getOpName(), self.instruction);
     public static const SIZE_C = 8;
     public static const SIZE_B = 8;
     public static const SIZE_Bx = (Instruction.SIZE_C + Instruction.SIZE_B + 1);
@@ -118,67 +116,45 @@ class iABC:Instruction{
     @meta static __tostring() ->
         string.format("<iABC|%s\tA=%d\tB=%d\tC=%d\tK=%d>", self.getOpName(), self.getA(), self.getB(), self.getC(), self.getK());
     public getA() -> self.getarg(Instruction.POS_A, Instruction.SIZE_A);
-    public setA(v:number){
-        self.setarg(v, Instruction.POS_A, Instruction.SIZE_A);
-    }
+    public setA(v:number) -> self.setarg(v, Instruction.POS_A, Instruction.SIZE_A);
     public getB() -> self.getarg(Instruction.POS_B, Instruction.SIZE_B);
     public getsB() -> Instruction.sC2int(self.getB());
-    public setB(v:number){
-        self.setarg(v, Instruction.POS_B, Instruction.SIZE_B);
-    }
+    public setB(v:number) -> self.setarg(v, Instruction.POS_B, Instruction.SIZE_B);
     public getC() -> self.getarg(Instruction.POS_C, Instruction.SIZE_C);
     public getsC() -> Instruction.sC2int(self.getC());
-    public setC(v:number){
-        self.setarg(v, Instruction.POS_C, Instruction.SIZE_C);
-    }
+    public setC(v:number) -> self.setarg(v, Instruction.POS_C, Instruction.SIZE_C);
     public getK() -> self.getarg(Instruction.POS_k, 1);
-    public setK(v:number){
-        self.setarg(v, Instruction.POS_k, 1);
-    }
+    public setK(v:number) -> self.setarg(v, Instruction.POS_k, 1);
 }
 class iABx:Instruction{
     @meta static __tostring() ->
         string.format("<iABx|%s\tA=%d\tBx=%d>", self.getOpName(), self.getA(), self.getBx());
     public getA() -> self.getarg(Instruction.POS_A, Instruction.SIZE_A);
-    public setA(v:number){
-        self.setarg(v, Instruction.POS_A, Instruction.SIZE_A);
-    }
+    public setA(v:number) -> self.setarg(v, Instruction.POS_A, Instruction.SIZE_A);
     public getBx() -> self.getarg(Instruction.POS_Bx, Instruction.SIZE_Bx);
-    public setBx(v:number){
-        self.setarg(v, Instruction.POS_Bx, Instruction.SIZE_Bx);
-    }
+    public setBx(v:number) -> self.setarg(v, Instruction.POS_Bx, Instruction.SIZE_Bx);
 }
 class iAsBx:Instruction{
     @meta static __tostring() ->
         string.format("<iAsBx|%s\tA=%d\tsBx=%d>", self.getOpName(), self.getA(), self.getsBx());
 
     public getA() -> self.getarg(Instruction.POS_A, Instruction.SIZE_A);
-    public setA(v:number){
-        self.setarg(v, Instruction.POS_A, Instruction.SIZE_A);
-    }
-    public setBx(v:number){
-        self.setarg(v, Instruction.POS_Bx, Instruction.SIZE_Bx);
-    }
+    public setA(v:number) -> self.setarg(v, Instruction.POS_A, Instruction.SIZE_A);
+    public setBx(v:number) -> self.setarg(v, Instruction.POS_Bx, Instruction.SIZE_Bx);
     public getsBx() -> self.getarg(Instruction.POS_Bx, Instruction.SIZE_Bx) - Instruction.OFFSET_sBx;
-    public setsBx(v:number){
-        self.setBx(v + Instruction.OFFSET_sBx);
-    }
+    public setsBx(v:number) -> self.setBx(v + Instruction.OFFSET_sBx);
 }
 class iAx:Instruction{
     @meta static __tostring() ->
         string.format("<iAx|%s\tAx=%d>", self.getOpName(), self.getAx());
     public getAx() -> self.getarg(Instruction.POS_Ax, Instruction.SIZE_Ax);
-    public setAx(v:number){
-        self.setarg(v, Instruction.POS_Ax, Instruction.SIZE_Ax);
-    }
+    public setAx(v:number) -> self.setarg(v, Instruction.POS_Ax, Instruction.SIZE_Ax);
 }
 class isJ:Instruction{
     @meta static __tostring() ->
         string.format("<isJ|%s\tsJ=%d>", self.getOpName(), self.getsJ());
     public getsJ() -> self.getarg(Instruction.POS_sJ, Instruction.SIZE_sJ) - Instruction.OFFSET_sJ;
-    public setsJ(v:number){
-        self.setarg(v + Instruction.OFFSET_sJ, Instruction.POS_sJ, Instruction.SIZE_sJ);
-    }
+    public setsJ(v:number) -> self.setarg(v + Instruction.OFFSET_sJ, Instruction.POS_sJ, Instruction.SIZE_sJ);
 }
 local class Value{
     string;--字符串
@@ -259,8 +235,8 @@ local class TValue {
 local class Upvaldesc{
     name;
     instack;
-    idx=0;
-    kind=0;
+    @nowrap idx=0;
+    @nowrap kind=0;
     public Upvaldesc(name, instack:boolean, idx:number, kind:number) {
         self.name = name;
         self.instack = instack;
@@ -289,8 +265,8 @@ local class LocVar{
     }
 }
 local class AbsLineInfo {
-    pc=-1;
-    line=-1;
+    @nowrap pc=-1;
+    @nowrap line=-1;
     public AbsLineInfo(pc, line) {
         self.pc = pc;
         self.line = line;
@@ -348,18 +324,18 @@ local class Proto{
         table.insert(buffer,"\n>")
         return table.concat(buffer)
     }
-    numparams = 0;
-    is_vararg;
-    maxstacksize = 0;
-    sizeupvalues = 0;
-    sizek = 0;
-    sizecode = 0;
-    sizelineinfo = 0;
-    sizep = 0;
-    sizelocvars = 0;
-    sizeabslineinfo = 0;
-    linedefined = 0;
-    lastlinedefined = 0;
+    @nowrap numparams = 0;
+    @nowrap is_vararg;
+    @nowrap maxstacksize = 0;
+    @nowrap sizeupvalues = 0;
+    @nowrap sizek = 0;
+    @nowrap sizecode = 0;
+    @nowrap sizelineinfo = 0;
+    @nowrap sizep = 0;
+    @nowrap sizelocvars = 0;
+    @nowrap sizeabslineinfo = 0;
+    @nowrap linedefined = 0;
+    @nowrap lastlinedefined = 0;
     k;
     code;
     p;
@@ -368,7 +344,7 @@ local class Proto{
     abslineinfo;
     locvars;
     source;
-    nupvalues=0;
+    @nowrap nupvalues=0;
 }
 
 local class lundump{
@@ -401,7 +377,7 @@ local class lundump{
         print("parse end, read "..self.pos.." bytes")
         return proto;
     }
-    private loadFunction(f:<Proto>,psource:any) {--psource可能nill
+    private loadFunction(f:<Proto>,psource:any) {--psource可能nil
         f.source = self.loadStringN();
         if f.source == nil then
             f.source = psource;
@@ -610,8 +586,8 @@ local sizeof_size_t = 8
 local class ldump{
     public static const DIBS = ((sizeof_size_t * CHAR_BIT + 6) / 7);
     private buffer;
-    private f;
-    private strip;
+    private const f;
+    private const strip;
     public ldump(f:<Proto>,strip:boolean){
         self.f = f;
         self.strip = strip;
