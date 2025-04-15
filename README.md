@@ -1,5 +1,5 @@
 # objlua-bytecode-parse
-objlua字节码的序列化与反序列化Lua(objlua)实现
+objlua字节码的序列化与反序列化Lua([ObjLua](https://github.com/nwdxlgzs/objlua))实现
 
 # demo
 ```lua
